@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: educ_postgres
+    environment:
+      POSTGRES_DB: educ_metrics_db
+      POSTGRES_USER: educ_user
+      POSTGRES_PASSWORD: educ_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U educ_user -d educ_metrics_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
